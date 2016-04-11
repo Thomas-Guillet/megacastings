@@ -28,9 +28,7 @@ public class ConnexionDAO {
             Login.setPassword(rs.getString("password"));
         
             Accueil accueil = new Accueil(Login);
-                accueil.setVisible(true);                
-                Connexion connexion = new Connexion();
-                connexion.setVisible(false);
+            accueil.setVisible(true);     
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Mot de Passe ou Email incorrect");
         }

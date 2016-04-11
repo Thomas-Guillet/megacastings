@@ -21,9 +21,8 @@ public class Accueil extends javax.swing.JFrame {
      * @throws java.sql.SQLException
      */
     public Accueil(Administrateur admin) throws ClassNotFoundException, SQLException {
-        System.out.println(admin.getEmail());
-        Lbl_user.setText(admin.getEmail());
         initComponents();
+        Lbl_user.setText(admin.getEmail());
     }
 
     /**
@@ -65,6 +64,8 @@ public class Accueil extends javax.swing.JFrame {
 
         jLabel1.setText("Connecté en tant que: ");
 
+        Lbl_user.setText("Utilisateur conecté");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -72,9 +73,9 @@ public class Accueil extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Lbl_user)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2))

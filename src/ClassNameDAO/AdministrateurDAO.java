@@ -6,37 +6,36 @@
 package ClassNameDAO;
 
 import ClassName.Administrateur;
-import static ClassNameDAO.ConnexionDAO.afficherAdministrateur;
 import com.mysql.jdbc.Connection;
 import fenetreJframe.Accueil;
 import fenetreJframe.Connexion;
+import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
  * @author thoma
  */
 public class AdministrateurDAO {
-    public static void connexion(Connection cn, Administrateur Login) throws ClassCastException, SQLException{
+    
+    private static int Id=0;
+    private static String Email;
+    private static String Password;
+    
+    public static Collection<Administrateur> ListerAdmin(Connection cn) throws ClassCastException, SQLException{
         Statement statement = cn.createStatement();
         
         ResultSet rs = statement.executeQuery("SELECT ID FROM admin");
         
-        int i = 0;
+        Collection<Administrateur> admin = new ArrayList();
+        
         while(rs.next()){
-            Login.setId(rs.getInt('ID'));
-            i = rs.getInt("ID");
+            admin.add(new Administrateur(Email, Password));
         }
-        if(i == 0){
-            javax.swing.JOptionPane.showMessageDialog(null, "Mot de Passe ou Email incorrect");
-        } else {
-                afficherAdministrateur(cn);
-                Accueil accueil = new Accueil();
-                accueil.setVisible(true);
-                Connexion connexion = new Connexion();
-                connexion.setVisible(false);            
-        }
+        return admin;
     }
 }

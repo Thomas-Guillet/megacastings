@@ -6,6 +6,7 @@
 package ClassNameDAO;
 
 import ClassName.Administrateur;
+import static ClassNameDAO.ConnexionDAO.afficherAdministrateur;
 import com.mysql.jdbc.Connection;
 import fenetreJframe.Accueil;
 import fenetreJframe.Connexion;
@@ -17,21 +18,20 @@ import java.sql.Statement;
  *
  * @author thoma
  */
-public class ConnexionDAO {
+public class AdministrateurDAO {
     public static void connexion(Connection cn, Administrateur Login) throws ClassCastException, SQLException{
         Statement statement = cn.createStatement();
         
-        ResultSet rs = statement.executeQuery("SELECT ID FROM admin WHERE mail ='" + Login.getEmail() + "' AND password ='" + Login.getPassword() + "'");
+        ResultSet rs = statement.executeQuery("SELECT ID FROM admin");
         
         int i = 0;
-        if(rs.next()){
+        while(rs.next()){
+            Login.setId(rs.getInt('ID'));
             i = rs.getInt("ID");
         }
         if(i == 0){
             javax.swing.JOptionPane.showMessageDialog(null, "Mot de Passe ou Email incorrect");
         } else {
-            Administrateur Login = new Administrateur(null, null, null);
-            AdministrateurDAO.connexion(cn, Login);
                 afficherAdministrateur(cn);
                 Accueil accueil = new Accueil();
                 accueil.setVisible(true);
@@ -39,14 +39,4 @@ public class ConnexionDAO {
                 connexion.setVisible(false);            
         }
     }
-    
-    public static void afficherAdministrateur(Connection cn) throws ClassCastException, SQLException{
-        Statement statement = cn.createStatement();
- 
-            ResultSet resultat = statement.executeQuery("SELECT * FROM admin");
-            while(resultat.next()){
-                System.out.println("Nom du client: "+resultat.getString("mail"));
-                System.out.println("Mot de passe: "+resultat.getString("password")); 
-            }
-        }
 }

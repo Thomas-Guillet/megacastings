@@ -5,10 +5,16 @@
  */
 package ClassNameDAO;
 
+import ClassName.Administrateur;
+import com.mysql.jdbc.Connection;
+import java.sql.SQLException;
+
 /**
  *
  * @author thoma
  */
 public class AccueilDAO {
-    
+    public static void connexion(Connection cn, Administrateur Login) throws ClassCastException, SQLException{
+        
+    }
 }

@@ -22,7 +22,8 @@ public class Accueil extends javax.swing.JFrame {
      */
     public Accueil(Administrateur admin) throws ClassNotFoundException, SQLException {
         initComponents();
-        Lbl_user.setText(admin.getEmail());
+        Lbl_nom.setText(admin.getNom());
+        Lbl_prenom.setText(admin.getPrenom());
     }
 
     /**
@@ -41,7 +42,8 @@ public class Accueil extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        Lbl_user = new javax.swing.JLabel();
+        Lbl_nom = new javax.swing.JLabel();
+        Lbl_prenom = new javax.swing.JLabel();
         tab_offres = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
@@ -62,9 +64,11 @@ public class Accueil extends javax.swing.JFrame {
 
         jButton1.setText("Changer d'Utilisateur");
 
-        jLabel1.setText("Connecté en tant que: ");
+        jLabel1.setText("Bonjour, ");
 
-        Lbl_user.setText("Utilisateur conecté");
+        Lbl_nom.setText("nom utilisateur");
+
+        Lbl_prenom.setText("prenom utilisateur");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,8 +78,10 @@ public class Accueil extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Lbl_user)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addComponent(Lbl_prenom)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Lbl_nom)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2))
@@ -87,7 +93,8 @@ public class Accueil extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jLabel1)
-                    .addComponent(Lbl_user))
+                    .addComponent(Lbl_prenom)
+                    .addComponent(Lbl_nom))
                 .addGap(0, 310, Short.MAX_VALUE))
         );
 
@@ -219,7 +226,8 @@ public class Accueil extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bg_Accueil;
     private javax.swing.JTabbedPane Bg_tab_accueil;
-    private javax.swing.JLabel Lbl_user;
+    private javax.swing.JLabel Lbl_nom;
+    private javax.swing.JLabel Lbl_prenom;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;

@@ -82,12 +82,14 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="Lbl_user" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="196" max="32767" attributes="0"/>
+                              <Component id="Lbl_prenom" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="Lbl_nom" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="191" max="32767" attributes="0"/>
                               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton2" min="-2" max="-2" attributes="0"/>
@@ -101,7 +103,8 @@
                                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="Lbl_user" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="Lbl_prenom" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="Lbl_nom" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="310" max="32767" attributes="0"/>
                           </Group>
@@ -121,12 +124,17 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel1">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Connect&#xe9; en tant que: "/>
+                        <Property name="text" type="java.lang.String" value="Bonjour, "/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="Lbl_user">
+                    <Component class="javax.swing.JLabel" name="Lbl_nom">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Utilisateur conect&#xe9;"/>
+                        <Property name="text" type="java.lang.String" value="nom utilisateur"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="Lbl_prenom">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="prenom utilisateur"/>
                       </Properties>
                     </Component>
                   </SubComponents>

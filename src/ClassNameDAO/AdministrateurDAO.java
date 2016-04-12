@@ -25,6 +25,8 @@ public class AdministrateurDAO {
     private static int Id=0;
     private static String Email;
     private static String Password;
+    private static String Nom;
+    private static String Prenom;
     
     public static Collection<Administrateur> ListerAdmin(Connection cn) throws ClassCastException, SQLException{
         Statement statement = cn.createStatement();
@@ -34,7 +36,7 @@ public class AdministrateurDAO {
         Collection<Administrateur> admin = new ArrayList();
         
         while(rs.next()){
-            admin.add(new Administrateur(Email, Password));
+            admin.add(new Administrateur(Email, Password, Nom, Prenom));
         }
         return admin;
     }

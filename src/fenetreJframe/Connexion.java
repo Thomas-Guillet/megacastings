@@ -111,7 +111,7 @@ public class Connexion extends javax.swing.JFrame {
             Cn = bdd.open();
             String mailText = text_mail.getText();
             String passwordText = text_password.getText();
-            Administrateur Login = new Administrateur(mailText, passwordText);
+            Administrateur Login = new Administrateur(mailText, passwordText, null, null);
             ConnexionDAO.connexion(Cn, Login);
         } catch(ClassNotFoundException ex) {
             Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);

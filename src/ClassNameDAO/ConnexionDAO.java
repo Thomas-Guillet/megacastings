@@ -26,6 +26,8 @@ public class ConnexionDAO {
         if(rs.next()){
             Login.setEmail(rs.getString("mail"));
             Login.setPassword(rs.getString("password"));
+            Login.setNom(rs.getString("nom"));
+            Login.setPrenom(rs.getString("prenom"));
         
             Accueil accueil = new Accueil(Login);
             accueil.setVisible(true);     

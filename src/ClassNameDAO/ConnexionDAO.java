@@ -12,6 +12,7 @@ import fenetreJframe.Connexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -29,8 +30,8 @@ public class ConnexionDAO {
             Login.setNom(rs.getString("nom"));
             Login.setPrenom(rs.getString("prenom"));
         
-            Accueil accueil = new Accueil(Login);
-            accueil.setVisible(true);     
+            Accueil accueil = new Accueil(Login, cn);
+            accueil.setVisible(true);
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Mot de Passe ou Email incorrect");
         }

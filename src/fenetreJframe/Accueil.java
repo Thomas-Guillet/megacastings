@@ -6,7 +6,18 @@
 package fenetreJframe;
 
 import ClassName.Administrateur;
+import ClassName.Offre;
+import ClassNameDAO.AccueilDAO;
+import com.mysql.jdbc.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListModel;
+import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 
 /**
  *
@@ -16,14 +27,23 @@ public class Accueil extends javax.swing.JFrame {
 
     /**
      * Creates new form Accueil
+     *
      * @param admin
+     * @param cn
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
-    public Accueil(Administrateur admin) throws ClassNotFoundException, SQLException {
+    
+    private DefaultListModel lister_offre=new DefaultListModel();
+    public Accueil(Administrateur admin, Connection cn) throws ClassNotFoundException, SQLException {
         initComponents();
         Lbl_nom.setText(admin.getNom());
         Lbl_prenom.setText(admin.getPrenom());
+        Collection<Offre> list_Offre = AccueilDAO.afficher_list_offre(cn);
+        for (Offre offre : list_Offre) {
+            lister_offre.addElement(offre.getIntitule());
+        }
+
     }
 
     /**
@@ -46,8 +66,8 @@ public class Accueil extends javax.swing.JFrame {
         Lbl_prenom = new javax.swing.JLabel();
         tab_offres = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
+        List_Offre = new javax.swing.JList<>();
+        Jtext_Intitule = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -111,14 +131,19 @@ public class Accueil extends javax.swing.JFrame {
 
         Bg_tab_accueil.addTab("Accueil", tab_accueil);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        List_Offre.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        List_Offre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                List_OffreMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(List_Offre);
 
-        jTextField1.setText("jTextField1");
+        Jtext_Intitule.setText("jTextField1");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -140,7 +165,7 @@ public class Accueil extends javax.swing.JFrame {
                 .addGap(85, 85, 85)
                 .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
+                    .addComponent(Jtext_Intitule)
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
@@ -161,7 +186,7 @@ public class Accueil extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(tab_offresLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Jtext_Intitule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -222,26 +247,40 @@ public class Accueil extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void List_OffreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_List_OffreMouseClicked
+        
+        int index = List_Offre.locationToIndex(evt.getPoint()); 
+        System.out.println(index);
+        Jtext_Intitule.setText(getTitle());
+        Object o = List_Offre.getModel().getElementAt(index);
+        Jtext_Intitule.setSelectedItem(List_Offre.getValueAt(index));
+        jSpinnerIdentifiant.setValue(tableModel.getValueAt(row, 0));
+        InputEmail.setText((String) tableModel.getValueAt(row, 3));
+        InputPrenom.setText((String) tableModel.getValueAt(row, 2));
+        InputNom.setText((String) tableModel.getValueAt(row, 1));
+           // TODO add your handling code here:
+    }//GEN-LAST:event_List_OffreMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bg_Accueil;
     private javax.swing.JTabbedPane Bg_tab_accueil;
+    private javax.swing.JTextField Jtext_Intitule;
     private javax.swing.JLabel Lbl_nom;
     private javax.swing.JLabel Lbl_prenom;
+    private javax.swing.JList<String> List_Offre;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel tab_accueil;
     private javax.swing.JPanel tab_articles;

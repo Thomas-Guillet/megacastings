@@ -9,15 +9,20 @@ import ClassName.Administrateur;
 import ClassName.Offre;
 import ClassNameDAO.AccueilDAO;
 import com.mysql.jdbc.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
+import megacastings.bdd;
 
 /**
  *
@@ -33,18 +38,32 @@ public class Accueil extends javax.swing.JFrame {
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
-    
-    private DefaultListModel lister_offre=new DefaultListModel();
+    private DefaultListModel lister_offre = new DefaultListModel();
+
     public Accueil(Administrateur admin, Connection cn) throws ClassNotFoundException, SQLException {
         initComponents();
         Lbl_nom.setText(admin.getNom());
         Lbl_prenom.setText(admin.getPrenom());
-        Collection<Offre> list_Offre = AccueilDAO.afficher_list_offre(cn);
-        for (Offre offre : list_Offre) {
-            lister_offre.addElement(offre.getIntitule());
+        Collection<Offre> list_Offre = AccueilDAO.recuperer_id_offre(cn);
+        list_Offre.stream().forEach((offre) -> {
+            lister_offre.addElement(offre.getIdOffre());
+        });
+        
+        ArrayList list_intitule = AccueilDAO.afficher_list_offre(cn);
+        DefaultListModel listoffreintitule = new DefaultListModel();
+
+//Remplir le model
+        int size = list_intitule.size();
+        for (int i = 0; i < size; i++) {
+            listoffreintitule.addElement(list_intitule.get(i));
         }
 
+//Donné le model à la liste
+        List_Offre.setModel(listoffreintitule);
+
     }
+
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,11 +88,14 @@ public class Accueil extends javax.swing.JFrame {
         List_Offre = new javax.swing.JList<>();
         Jtext_Intitule = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        Jtext_Description = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
+        Jtext_Localisation = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         tab_articles = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
@@ -115,7 +137,7 @@ public class Accueil extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(Lbl_prenom)
                     .addComponent(Lbl_nom))
-                .addGap(0, 310, Short.MAX_VALUE))
+                .addGap(0, 320, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout tab_accueilLayout = new javax.swing.GroupLayout(tab_accueil);
@@ -145,55 +167,80 @@ public class Accueil extends javax.swing.JFrame {
 
         Jtext_Intitule.setText("jTextField1");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        Jtext_Description.setColumns(20);
+        Jtext_Description.setRows(5);
+        jScrollPane3.setViewportView(Jtext_Description);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTextField2.setText("jTextField2");
+        Jtext_Localisation.setText("jTextField2");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("Description de l'Offre");
+
+        jButton3.setText("Nouveau");
+
+        jButton6.setText("Supprimer");
+
+        jButton7.setText("Enregistrer");
 
         javax.swing.GroupLayout tab_offresLayout = new javax.swing.GroupLayout(tab_offres);
         tab_offres.setLayout(tab_offresLayout);
         tab_offresLayout.setHorizontalGroup(
             tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab_offresLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                    .addComponent(Jtext_Intitule)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(tab_offresLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBox1, 0, 106, Short.MAX_VALUE)
+                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(Jtext_Intitule, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Jtext_Localisation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab_offresLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)))
         );
         tab_offresLayout.setVerticalGroup(
             tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
             .addGroup(tab_offresLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(jLabel2)
+                .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(tab_offresLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(tab_offresLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(Jtext_Intitule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(Jtext_Localisation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tab_offresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(tab_offresLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(Jtext_Intitule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(191, Short.MAX_VALUE))
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6))))
         );
 
         Bg_tab_accueil.addTab("Offres", tab_offres);
@@ -215,7 +262,7 @@ public class Accueil extends javax.swing.JFrame {
         );
         tab_articlesLayout.setVerticalGroup(
             tab_articlesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
         );
 
         Bg_tab_accueil.addTab("Articles", tab_articles);
@@ -248,29 +295,45 @@ public class Accueil extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void List_OffreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_List_OffreMouseClicked
-        
-        int index = List_Offre.locationToIndex(evt.getPoint()); 
-        System.out.println(index);
+            
+        try {
+            Connection cn;
+            cn = bdd.open();
+         int index = List_Offre.locationToIndex(evt.getPoint());
+        System.out.println(lister_offre.get(index));
         Jtext_Intitule.setText(getTitle());
         Object o = List_Offre.getModel().getElementAt(index);
-        Jtext_Intitule.setSelectedItem(List_Offre.getValueAt(index));
-        jSpinnerIdentifiant.setValue(tableModel.getValueAt(row, 0));
-        InputEmail.setText((String) tableModel.getValueAt(row, 3));
-        InputPrenom.setText((String) tableModel.getValueAt(row, 2));
-        InputNom.setText((String) tableModel.getValueAt(row, 1));
-           // TODO add your handling code here:
+        Object idoffre = lister_offre.get(index);
+        Offre offre = new Offre(ABORT, "", "", null, null, null, "", null, null, null, null, null);
+        AccueilDAO.requete_sql(cn, idoffre, offre);
+
+        Jtext_Intitule.setText(String.valueOf(offre.getIntitule()));
+        Jtext_Localisation.setText(String.valueOf(offre.getLocalisation()));
+        Jtext_Description.setText(String.valueOf(offre.getDescriptionPoste()));
+        
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_List_OffreMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bg_Accueil;
     private javax.swing.JTabbedPane Bg_tab_accueil;
+    private javax.swing.JTextArea Jtext_Description;
     private javax.swing.JTextField Jtext_Intitule;
+    private javax.swing.JTextField Jtext_Localisation;
     private javax.swing.JLabel Lbl_nom;
     private javax.swing.JLabel Lbl_prenom;
     private javax.swing.JList<String> List_Offre;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -280,8 +343,6 @@ public class Accueil extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel tab_accueil;
     private javax.swing.JPanel tab_articles;
     private javax.swing.JPanel tab_offres;

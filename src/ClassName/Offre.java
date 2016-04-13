@@ -38,9 +38,10 @@ public class Offre {
         this.DateDebutContrat = DateDebutContrat;
     }
 
-    public Offre(String Intitule) {
-        this.Intitule = Intitule;
+    public Offre(int idOffre) {
+        this.idOffre = idOffre;
     }
+
 
     public int getIdOffre() {
         return idOffre;
